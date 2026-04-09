@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoSnap 상세 프로젝트 보고서</title>
+<style>
+body { font-family: Arial, sans-serif; line-height: 1.7; margin: 24px; max-width: 980px; color: #222; }
+h1, h2, h3 { color: #1f3a5f; }
+section { margin-bottom: 28px; }
+ul, ol { margin-top: 8px; }
+code { background: #f4f4f4; padding: 2px 5px; border-radius: 4px; }
+table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+th, td { border: 1px solid #bbb; padding: 8px; text-align: left; vertical-align: top; }
+th { background: #eef3f8; }
+img { max-width: 100%; height: auto; display: block; margin: 10px 0; }
+.small { color: #555; font-size: 0.95em; }
+</style>
+</head>
+<body>
+<h1>AutoSnap 상세 프로젝트 보고서</h1>
+
+<section>
+<h2>기획 (Planning)</h2>
+<h3>문제 인식</h3>
+<p>교육, 회의, 협업, 고객 지원, 개발 문서 작성 등 다양한 상황에서 사용자는 화면의 일부를 빠르게 캡처하고, 그 위에 화살표나 텍스트를 덧붙여 즉시 전달할 필요가 있다. 하지만 기존 도구는 설치 과정이 번거롭거나, 기능이 복잡하거나, 캡처 후 편집 단계가 길어 순간적인 전달에 적합하지 않은 경우가 많다.</p>
+
+<h3>대상 사용자</h3>
+<ul>
+<li>사무직 사용자: 회의 화면, 보고용 자료, 메신저 공유용 이미지가 필요한 경우</li>
+<li>개발자: 오류 화면, 로그, UI 버그를 빠르게 캡처해 공유해야 하는 경우</li>
+<li>강사/학생: 수업 자료, 발표 화면, 설명용 이미지를 만드는 경우</li>
+<li>고객 지원/운영 담당자: 문제 재현 화면을 빠르게 기록해야 하는 경우</li>
+</ul>
+
+<h3>개발 동기</h3>
+<ul>
+<li>설치 없이 즉시 실행 가능한 경량 캡처 도구에 대한 필요</li>
+<li>캡처와 주석을 하나의 흐름으로 연결해 작업 시간을 줄이고자 하는 목표</li>
+<li>Windows 환경에서 시스템 트레이 기반으로 상시 대기하는 편의성 제공</li>
+<li>단일 실행 파일 배포를 통해 사용 장벽을 낮추고자 함</li>
+</ul>
+</section>
+
+<section>
+<h2>구성물 (Artifacts)</h2>
+<h3>소스 파일 및 디렉터리 구조</h3>
+<ul>
+<li><code>src/</code> - 핵심 애플리케이션 코드
+  <ul>
+    <li><code>main.py</code> - 프로그램 진입점, 트레이 아이콘 초기화, 이벤트 루프 관리</li>
+    <li><code>selection.py</code> - 반투명 전체화면 레이어 및 드래그 기반 영역 선택</li>
+    <li><code>annotate.py</code> - 화살표, 텍스트, 간단한 편집 UI 처리</li>
+    <li><code>utils.py</code> - 이미지 저장, 클립보드 복사, 공통 유틸리티</li>
+    <li><code>config.py</code> - 기본 설정, 테마, 단축 옵션 값 관리</li>
+  </ul>
+</li>
+<li><code>assets/</code> - 아이콘, 샘플 이미지, UI 리소스</li>
+<li><code>tests/</code> - 기능 검증용 테스트 코드</li>
+<li><code>docs/</code> - README, 사용법, 변경 내역</li>
+</ul>
+
+<h3>CI 워크플로우</h3>
+<ul>
+<li><code>.github/workflows/build.yml</code> - GitHub Actions 기반 자동 빌드</li>
+<li>코드 푸시 또는 태그 생성 시 자동 실행</li>
+<li>PyInstaller를 사용해 <code>autosnap.exe</code> 단일 파일 패키징</li>
+<li>빌드 산출물 업로드 및 Release 생성 보조</li>
+</ul>
+
+<h3>Release Asset</h3>
+<ul>
+<li><code>autosnap.exe</code> - Windows용 단일 실행 파일</li>
+<li>릴리스 노트, 사용 가이드, 스크린샷 이미지</li>
+<li>향후 포터블 ZIP 패키지 지원 가능성</li>
+</ul>
+</section>
+
+<section>
+<h2>주요 기능 목록 (Features)</h2>
+<ul>
+<li>화면 영역 선택
+  <ul>
+    <li>마우스 드래그로 캡처 범위 지정</li>
+    <li>선택 중 실시간 사각형 안내 표시</li>
+    <li>ESC로 선택 취소 가능</li>
+  </ul>
+</li>
+<li>즉시 주석 기능
+  <ul>
+    <li>화살표, 텍스트, 강조 표시 등 기본 주석 지원</li>
+    <li>주석 색상 및 굵기 조정 가능</li>
+    <li>캡처 직후 편집 화면으로 자연스럽게 전환</li>
+  </ul>
+</li>
+<li>시스템 트레이 통합
+  <ul>
+    <li>백그라운드에서 상시 대기</li>
+    <li>트레이 메뉴로 캡처 시작, 설정, 종료 제공</li>
+    <li>작업 표시줄을 차지하지 않는 최소화된 UX</li>
+  </ul>
+</li>
+<li>저장/공유 편의성
+  <ul>
+    <li>PNG 파일 저장</li>
+    <li>클립보드 복사 기능</li>
+    <li>향후 메신저/메일 공유 확장 가능</li>
+  </ul>
+</li>
+<li>경량 실행
+  <ul>
+    <li>단일 exe 배포</li>
+    <li>낮은 초기 진입 장벽</li>
+    <li>Python 미설치 환경에서도 동작 가능</li>
+  </ul>
+</li>
+</ul>
+</section>
+
+<section>
+<h2>실현 방법 (Implementation Details)</h2>
+<h3>아키텍처 다이어그램</h3>
+<img src="data:image/png;base64,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CBu+i2/tzFvFz89v796927dvP378eF5eXkVFhYeHh/a/DQICAqzdmm3qvN+1f6eRlJS0b9++y5cvl5aWNmnSpF27dv369Rs7dmy1M5LWjqjOvdvwSK6TVSOyT4ZaT7tAHP1VRnJysv6tPeC/jL2fwwIAHcECIAbBAiAG57AAiMErLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYhAsAGIQLABiECwAYvwf1NRgwLtowsQAAAAASUVORK5CYII=" alt="AutoSnap Architecture" style="border:1px solid #ccc;">
+<p class="small">위 이미지는 아키텍처 설명용 플레이스홀더입니다.</p>
+
+<h3>흐름도 설명</h3>
+<ol>
+<li>프로그램 시작 후 시스템 트레이 아이콘을 생성한다.</li>
+<li>사용자가 트레이 메뉴에서 캡처 시작을 선택한다.</li>
+<li><code>SelectionWindow</code>가 화면 전체를 덮는 투명 레이어를 표시한다.</li>
+<li>사용자가 마우스로 영역을 드래그해 선택한다.</li>
+<li>선택 영역이 확정되면 <code>AnnotateWindow</code>가 열리고 주석 도구가 활성화된다.</li>
+<li>편집 완료 후 이미지를 저장하거나 클립보드로 복사한다.</li>
+</ol>
+
+<h3>모듈별 역할</h3>
+<table>
+<tr><th>모듈</th><th>역할</th><th>주요 책임</th></tr>
+<tr><td><code>main.py</code></td><td>시작점</td><td>트레이 아이콘, 이벤트 루프, 메뉴 연결</td></tr>
+<tr><td><code>selection.py</code></td><td>영역 선택</td><td>투명 창, 마우스 이벤트, 좌표 계산</td></tr>
+<tr><td><code>annotate.py</code></td><td>주석 편집</td><td>도형/텍스트 렌더링, 편집 상태 관리</td></tr>
+<tr><td><code>utils.py</code></td><td>공통 처리</td><td>이미지 저장, 클립보드 처리, 예외 보조</td></tr>
+</table>
+</section>
+
+<section>
+<h2>사용 기술·AI 도구 활용 과정 (Tech Stack & AI Assistance)</h2>
+<h3>라이브러리 및 도구</h3>
+<ul>
+<li>Python 3.10+</li>
+<li>tkinter - 기본 GUI 구성</li>
+<li>Pillow 9.5 - 이미지 처리 및 합성</li>
+<li>pystray 0.19 - 시스템 트레이 아이콘 구현</li>
+<li>PyInstaller 5.13 - 단일 실행 파일 패키징</li>
+<li>GitHub Actions - CI/CD 자동화</li>
+<li>pytest - 기본 기능 테스트</li>
+</ul>
+
+<h3>AI 도구 활용 내용</h3>
+<ul>
+<li>기능 구조 설계와 모듈 분리에 대한 초안 작성 지원</li>
+<li>사용자 흐름을 더 단순하게 만드는 UI 개선 아이디어 제안</li>
+<li>README 및 보고서 문안 초안 생성 보조</li>
+<li>GitHub Actions 워크플로우 YAML 작성 보조</li>
+<li>리팩터링 시 반복 코드 축소와 예외 처리 개선 아이디어 제공</li>
+</ul>
+</section>
+
+<section>
+<h2>결과 (Result)</h2>
+<h3>사용 방법</h3>
+<ol>
+<li>실행 파일 <code>autosnap.exe</code>를 더블클릭한다.</li>
+<li>시스템 트레이 아이콘에서 캡처 시작을 선택한다.</li>
+<li>마우스로 원하는 화면 영역을 드래그한다.</li>
+<li>주석 도구로 화살표나 텍스트를 추가한다.</li>
+<li>완료 후 PNG로 저장하거나 클립보드에 복사한다.</li>
+</ol>
+
+<h3>스크린샷 예시</h3>
+<img src="data:image/png;base64,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" alt="AutoSnap 스크린샷" style="border:1px solid #ccc;">
+<p class="small">위 이미지는 결과 화면 설명용 플레이스홀더입니다.</p>
+
+<h3>실사용 기대 효과</h3>
+<ul>
+<li>캡처부터 공유까지 걸리는 시간을 단축</li>
+<li>별도 편집 툴 없이 빠른 커뮤니케이션 가능</li>
+<li>반복적인 화면 설명 작업의 피로도 감소</li>
+</ul>
+</section>
+
+<section>
+<h2>특장점 (Strengths)</h2>
+<h3>비교 분석</h3>
+<table>
+<tr><th>도구</th><th>설치 필요</th><th>단일 exe</th><th>즉시 주석</th><th>경량성</th><th>오픈소스 확장성</th></tr>
+<tr><td>Windows 기본 캡처 도구</td><td>아니오</td><td>아니오</td><td>제한적</td><td>중간</td><td>낮음</td></tr>
+<tr><td>Greenshot</td><td>예</td><td>아니오</td><td>예</td><td>중간</td><td>예</td></tr>
+<tr><td>AutoSnap</td><td>아니오</td><td>예</td><td>예</td><td>높음</td><td>예</td></tr>
+</table>
+
+<ul>
+<li>포터블 배포에 적합해 설치 부담이 없다.</li>
+<li>캡처 직후 편집으로 작업 흐름이 끊기지 않는다.</li>
+<li>단일 exe 형태로 전달이 쉬워 사내 배포에 유리하다.</li>
+<li>필요 기능 중심으로 구성되어 사용법이 단순하다.</li>
+</ul>
+</section>
+
+<section>
+<h2>한계점 (Limitations)</h2>
+<h3>기술적 제약</h3>
+<ul>
+<li>Windows 중심 구현으로 다른 운영체제 지원이 제한적이다.</li>
+<li>전역 핫키, 멀티 모니터 정밀 스케일링은 향후 보완이 필요하다.</li>
+<li>PDF, SVG 등 고급 출력 형식은 아직 지원하지 않는다.</li>
+<li>고급 편집 기능은 전문 그래픽 도구에 비해 제한적이다.</li>
+</ul>
+
+<h3>테스트 커버리지</h3>
+<ul>
+<li>핵심 로직에 대한 단위 테스트는 일부 구성되어 있다.</li>
+<li>GUI 상호작용에 대한 자동화 테스트는 충분하지 않다.</li>
+<li>실제 배포 환경에서의 호환성 검증은 추가 필요하다.</li>
+</ul>
+</section>
+
+<section>
+<h2>Todo (Roadmap)</h2>
+<ol>
+<li><strong>v1.1</strong>
+  <ul>
+    <li>전역 단축키 지원</li>
+    <li>멀티 모니터 좌표 처리 개선</li>
+    <li>설정 화면 정리 및 사용자 옵션 확장</li>
+  </ul>
+</li>
+<li><strong>v1.2</strong>
+  <ul>
+    <li>PDF/SVG 내보내기</li>
+    <li>다크 모드 테마</li>
+    <li>최근 사용 설정 저장 기능</li>
+  </ul>
+</li>
+<li><strong>v2.0</strong>
+  <ul>
+    <li>크로스플랫폼 기반 검토</li>
+    <li>클라우드 공유 기능</li>
+    <li>자동 테스트 및 배포 고도화</li>
+  </ul>
+</li>
+</ol>
+</section>
+
+</body>
+</html>
